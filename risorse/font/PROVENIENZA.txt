@@ -1,0 +1,18 @@
+Caratteri del sito: da dove vengono e come verificarli (regola: niente scaricato «all'ultima versione» e senza impronta)
+
+Scaricati il 14/11/2026 dal registro pubblico npm, pacchetti Fontsource a versione fissa (licenza SIL OFL 1.1).
+L'integrità del pacchetto è quella dichiarata dal registro e verificata da npm al momento dello scarico.
+
+@fontsource/league-gothic@5.3.0
+  integrità  sha512-gqedetX+UlaiJgLiPnOzWGB1sY3OtNhS8YMjTy2D73AcsagIqpdIizssr1MStcUYf3D/zzanECuXawIgMGZxDg==
+  league-gothic-400.woff2                 sha256 44dceee4d918f5928d05ad0711d17e1edd421ce7fd7bed91d05642d8d693a8b1
+
+@fontsource-variable/figtree@5.3.0
+  integrità  sha512-VRVodD7OiG7apQwE8/2fMjaqpY/a0qRJqL5HtYj8CKIVps+9amaFcdfKmDIf7iqYQx6iPLlArVXAfKeIZmVcNQ==
+  figtree-variabile.woff2                 sha256 4ba7d3d096695818fe0686be4f1e82c6b05134e18a22260336130335027462dd
+  figtree-variabile-corsivo.woff2         sha256 7242fa62d13d46172816b266f03c027999faa3755a52c2124bc2c440f6f4b983
+
+@fontsource/libre-baskerville@5.3.0
+  integrità  sha512-IA6OLq36/JWMX70Fha15sri2qWsijFh7hgdDXCRZHjKUHtWarLQoiGilvm7iMqm7HiYFEv9acF3+IuRHO9kUiA==
+  libre-baskerville-400.woff2             sha256 3eb80fbca70498126925ce16ff5c20b2fa35e67ae7123ddb46302d2778dfbf0e
+  libre-baskerville-400-corsivo.woff2     sha256 efb7e5f4376a557314f5bb9f5197ef837d86c0ab38e1a50a0ff5c60c3400c629
