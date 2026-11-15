@@ -67,4 +67,43 @@
     });
     testo.setAttribute("aria-live", "polite");
   }
+
+  /* La testata parte alta e si stringe appena si scorre: lo dice una «vedetta» in cima alla pagina */
+  var testata = document.querySelector("[data-testata]"), vedetta = document.querySelector("[data-vedetta]");
+  if (testata && vedetta && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (voci) { testata.classList.toggle("stretta", !voci[0].isIntersecting); }).observe(vedetta);
+  }
+
+  /* Il menu sul telefono: un pannello che si apre dal pulsante, si chiude con Esc, con un tocco su una voce o tornando
+     a uno schermo largo; mentre è aperto la pagina sotto non scorre */
+  var apriMenu = document.querySelector("[data-menu-apri]"), parolaMenu = document.querySelector("[data-menu-parola]");
+  function menu(aperto) {
+    radice.classList.toggle("menu-aperto", aperto);
+    apriMenu.setAttribute("aria-expanded", aperto ? "true" : "false");
+    if (parolaMenu) { parolaMenu.textContent = aperto ? "Chiudi il menu" : "Apri il menu"; }
+  }
+  if (apriMenu) {
+    apriMenu.addEventListener("click", function () { menu(!radice.classList.contains("menu-aperto")); });
+    document.addEventListener("keydown", function (evento) {
+      if (evento.key === "Escape" && radice.classList.contains("menu-aperto")) { menu(false); apriMenu.focus(); }
+    });
+    var pannello = document.getElementById("menu");
+    if (pannello) { pannello.addEventListener("click", function (evento) { if (evento.target.closest && evento.target.closest("a")) { menu(false); } }); }
+    if (window.matchMedia) {
+      var largo = window.matchMedia("(min-width: 821px)");
+      var seLargo = function () { if (largo.matches) { menu(false); } };
+      if (largo.addEventListener) { largo.addEventListener("change", seLargo); } else if (largo.addListener) { largo.addListener(seLargo); }
+    }
+  }
+
+  /* Le fotografie dell'apertura si possono fermare */
+  var scena = document.querySelector("[data-scena]"), fermaScena = document.querySelector("[data-scena-ferma]");
+  if (scena && fermaScena) {
+    fermaScena.addEventListener("click", function () {
+      var fermata = !scena.classList.contains("ferma");
+      scena.classList.toggle("ferma", fermata);
+      fermaScena.setAttribute("aria-pressed", fermata ? "true" : "false");
+      fermaScena.setAttribute("aria-label", fermata ? "Fai ripartire le fotografie" : "Ferma le fotografie che scorrono");
+    });
+  }
 })();

@@ -172,8 +172,15 @@
   --radius-lg: 8px;
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  /* la testata parte alta e si stringe scorrendo: le due altezze e il loro rapporto */
+  --testata-alta: 104px;
+  --testata-bassa: 68px;
+  --testata-rapporto: 0.654;
   /* impeccable-disable-next-line bounce-easing -- molla leggera solo sui comandi e sulle carte della vetrina, ferma con «Riduci movimento» (scelta voluta) */
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@media (max-width: 820px) {
+  :root { --testata-alta: 80px; --testata-bassa: 60px; --testata-rapporto: 0.75; }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -297,15 +304,50 @@ main :where(p, li, dd, blockquote, figcaption) { text-wrap: pretty; }
 .testo :where(p, li), .fase p { max-width: var(--misura); }
 
 /* ---------- testata ---------- */
-.testata { position: sticky; top: 0; z-index: 40; background: var(--bg); border-bottom: 1px solid var(--hairline); }
-.testata-riga { display: flex; align-items: center; gap: var(--s6); min-height: 84px; }
+/* parte alta e si stringe scorrendo. Si muovono solo `transform` e `opacity`: il fondo è un velo che si accorcia, il
+   contenuto sale e il marchio rimpicciolisce; lo spazio liberato è trasparente e lascia passare i tocchi */
+html { scroll-padding-top: calc(var(--testata-bassa) + 16px); }
+.vedetta { position: absolute; top: 0; left: 0; width: 1px; height: 120px; pointer-events: none; }
+.testata { position: sticky; top: 0; z-index: 40; height: var(--testata-alta); pointer-events: none; }
+.testata::before { content: ""; position: absolute; inset: 0; background: var(--bg); box-shadow: 0 1px 0 var(--hairline); transform-origin: top; transition: transform 0.28s var(--ease); }
+.testata.stretta::before { transform: scaleY(var(--testata-rapporto)); box-shadow: 0 1px 0 var(--hairline), var(--shadow); }
+.testata-riga { position: relative; display: flex; align-items: center; gap: var(--s6); height: 100%; transition: transform 0.28s var(--ease); }
+.testata.stretta .testata-riga { transform: translateY(calc((var(--testata-bassa) - var(--testata-alta)) / 2)); }
+.testata-riga > * { pointer-events: auto; }
 .marchio { display: inline-flex; align-items: center; min-height: 44px; margin-right: auto; }
-.marchio img { width: auto; height: 60px; filter: var(--logo-filter); }
+.marchio img { width: auto; height: 68px; filter: var(--logo-filter); transform-origin: left center; transition: transform 0.28s var(--ease); }
+.testata.stretta .marchio img { transform: scale(0.76); }
 .menu ul { display: flex; align-items: center; gap: clamp(4px, 1.4vw, 20px); }
 .menu a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; color: var(--text); font-weight: 600; font-size: 0.9375rem; text-decoration: none; border-radius: var(--radius-sm); position: relative; }
 .menu a::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 9px; height: 2px; background: var(--primary); transform: scaleX(0); transform-origin: left; transition: transform 0.35s var(--ease); }
 .menu a:hover::after, .menu a[aria-current="page"]::after { transform: scaleX(1); }
 .menu a[aria-current="page"] { font-weight: 800; }
+.menu-apri { display: none; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; background: transparent; color: var(--text); border: 1.5px solid var(--border); border-radius: 999px; cursor: pointer; }
+.menu-apri svg { width: 20px; height: 20px; }
+.menu-apri .chiudi, .menu-aperto .menu-apri .apri { display: none; }
+.menu-aperto .menu-apri .chiudi { display: block; }
+/* sul telefono il menu è un pannello che si apre dal pulsante, con voci grandi */
+@media (max-width: 820px) {
+  .testata-riga { gap: var(--s2); }
+  .marchio img { height: 54px; }
+  .testata.stretta .marchio img { transform: scale(0.84); }
+  .menu-apri { display: inline-flex; order: 3; }
+  .tema { order: 2; }
+  .menu { position: absolute; left: calc(50% - 50vw); right: calc(50% - 50vw); top: var(--testata-alta); max-height: calc(100vh - var(--testata-alta)); max-height: calc(100dvh - var(--testata-alta)); overflow-y: auto; padding: var(--s3) var(--gutter) var(--s10); background: var(--bg); border-top: 1px solid var(--hairline); box-shadow: var(--shadow); visibility: hidden; opacity: 0; transform: translateY(-8px); transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), visibility 0s linear 0.2s; }
+  .testata.stretta .menu { top: calc((var(--testata-alta) + var(--testata-bassa)) / 2); }
+  .menu-aperto .menu { visibility: visible; opacity: 1; transform: none; transition-delay: 0s; }
+  .menu ul { display: grid; gap: 0; }
+  .menu li { border-bottom: 1px solid var(--hairline); }
+  .menu a { width: 100%; min-height: 60px; padding: 0 var(--s1); font-family: var(--font-display); font-size: 1.9rem; font-weight: 400; letter-spacing: 0.02em; text-transform: uppercase; }
+  .menu a::after { display: none; }
+  .menu a[aria-current="page"], .menu a[data-sezione] { color: var(--link); font-weight: 400; }
+  html.menu-aperto { overflow: hidden; }
+}
+/* senza JavaScript: niente pannello e niente restringimento, il menu resta in vista */
+.no-js .testata { position: static; height: auto; pointer-events: auto; }
+.no-js .testata-riga { flex-wrap: wrap; height: auto; padding-block: var(--s3); }
+.no-js .menu-apri { display: none; }
+.no-js .menu { position: static; max-height: none; padding: 0; border: 0; box-shadow: none; visibility: visible; opacity: 1; transform: none; }
 .tema { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 44px; min-height: 44px; padding: 0 12px; background: transparent; color: var(--text); border: 1.5px solid var(--border); border-radius: 999px; font-weight: 600; font-size: var(--fs-small); }
 .tema svg { width: 18px; height: 18px; }
 .tema .sole { display: var(--mostra-sole); }
@@ -675,13 +717,6 @@ html.finestra-aperta { overflow: hidden; }
   .chiusura-griglia { align-items: start; }
 }
 @media (max-width: 720px) {
-  .testata { position: static; }
-  .testata-riga { flex-wrap: wrap; gap: 0 var(--s3); min-height: 0; padding-top: 6px; }
-  .marchio img { height: 50px; }
-  .menu { order: 3; width: 100%; margin-inline: calc(-1 * var(--gutter)); width: calc(100% + 2 * var(--gutter)); border-top: 1px solid var(--hairline); overflow-x: auto; scrollbar-width: none; }
-  .menu::-webkit-scrollbar { display: none; }
-  .menu ul { gap: 0; padding-inline: calc(var(--gutter) - 10px); width: max-content; min-width: 100%; justify-content: space-between; }
-  .menu a { font-size: 0.9375rem; }
   .tema span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .tema { padding: 0; }
   .porte, .pagine-libro { grid-template-columns: minmax(0, 1fr); }
@@ -708,6 +743,37 @@ html.finestra-aperta { overflow: hidden; }
   .testata, .piede, .salta, .tema, .filtri, .azioni, .groviglio-comando { display: none !important; }
   .sezione { padding-block: 24px; }
 }
+
+/* ---------- striscia in cima: uno o due inviti veri, scritti nei dati del sito ---------- */
+.striscia { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 var(--s3); margin: 0; max-width: none; padding: 0 var(--gutter); background: var(--shell); color: var(--on-shell); font-size: var(--fs-small); font-weight: 600; text-align: center; }
+.striscia a { display: inline-flex; align-items: center; min-height: 44px; color: var(--on-shell); }
+.striscia :focus-visible { outline-color: var(--on-shell); }
+@media (max-width: 720px) { .striscia span, .striscia a + span + a { display: none; } }
+
+/* ---------- apertura: prima le fotografie dei progetti, a tutta larghezza ---------- */
+.scena { position: relative; height: clamp(320px, 62vh, 700px); overflow: hidden; background: var(--night); }
+.scena-foto { position: absolute; inset: 0; opacity: 0; }
+.scena-foto:first-child { opacity: 1; }
+.scena-foto picture, .scena-foto img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* le fotografie si danno il cambio piano, con un lento avvicinarsi: solo se il movimento è gradito */
+@media (prefers-reduced-motion: no-preference) {
+  .js .scena-foto { animation: scena-cambio 28s infinite; }
+  .js .scena-foto:first-child { animation-name: scena-prima; }
+  .js .scena-foto:nth-child(2) { animation-delay: 7s; }
+  .js .scena-foto:nth-child(3) { animation-delay: 14s; }
+  .js .scena-foto:nth-child(4) { animation-delay: 21s; }
+  .js .scena.ferma .scena-foto { animation-play-state: paused; }
+  .js .scena-ferma { display: grid; }
+}
+@keyframes scena-prima { 0% { opacity: 1; transform: scale(1); } 25% { opacity: 1; } 29% { opacity: 0; transform: scale(1.07); } 96% { opacity: 0; transform: scale(1); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes scena-cambio { 0% { opacity: 0; transform: scale(1); } 4% { opacity: 1; } 25% { opacity: 1; } 29% { opacity: 0; transform: scale(1.07); } 100% { opacity: 0; transform: scale(1.07); } }
+.scena-ferma { position: absolute; right: var(--gutter); bottom: var(--s4); z-index: 2; display: none; place-content: center; width: 44px; height: 44px; padding: 0; background: var(--night); color: var(--on-night); border: 1px solid var(--on-night); border-radius: 999px; cursor: pointer; }
+.scena-ferma svg { width: 20px; height: 20px; }
+.scena-ferma:focus-visible { outline-color: var(--on-night); }
+.scena-ferma .via, .scena.ferma .scena-ferma .pausa { display: none; }
+.scena.ferma .scena-ferma .via { display: block; }
+@media (max-width: 720px) { .scena { height: clamp(260px, 46vh, 420px); } }
+@media print { .scena, .striscia { display: none; } }
 
 /* ---------- solo per la bozza in anteprima: non fa parte del sito vero ---------- */
 .anteprima-fascia { margin: 0; max-width: none; padding: 10px max(var(--gutter), calc((100% - var(--maxw)) / 2)); background: var(--warning-bg); color: var(--warning-fg); font-size: var(--fs-small); line-height: 1.4; }
