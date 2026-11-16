@@ -16,3 +16,6 @@ L'integrità del pacchetto è quella dichiarata dal registro e verificata da npm
   integrità  sha512-IA6OLq36/JWMX70Fha15sri2qWsijFh7hgdDXCRZHjKUHtWarLQoiGilvm7iMqm7HiYFEv9acF3+IuRHO9kUiA==
   libre-baskerville-400.woff2             sha256 3eb80fbca70498126925ce16ff5c20b2fa35e67ae7123ddb46302d2778dfbf0e
   libre-baskerville-400-corsivo.woff2     sha256 efb7e5f4376a557314f5bb9f5197ef837d86c0ab38e1a50a0ff5c60c3400c629
+
+16/11/2026: tolto figtree-variabile-corsivo.woff2. Nessuna pagina del sito lo usava (controllato nel browser su tutte le
+pagine); la skill di grafica 3.3.0 chiede di ospitare solo i caratteri davvero usati.

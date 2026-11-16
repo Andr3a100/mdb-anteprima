@@ -259,7 +259,6 @@
 /* riserva per i titoli: un carattere del computer rimpicciolito fino a occupare la stessa larghezza di League Gothic (misurato: 0,54) */
 @font-face { font-family: "Titoli di riserva"; src: local("Arial"), local("ArialMT"), local("Helvetica Neue"), local("Roboto"), local("Liberation Sans"); size-adjust: 54%; }
 @font-face { font-family: "Figtree"; src: url("../font/figtree-variabile.woff2") format("woff2"); font-weight: 300 900; font-style: normal; font-display: swap; }
-@font-face { font-family: "Figtree"; src: url("../font/figtree-variabile-corsivo.woff2") format("woff2"); font-weight: 300 900; font-style: italic; font-display: swap; }
 @font-face { font-family: "Libre Baskerville"; src: url("../font/libre-baskerville-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
 @font-face { font-family: "Libre Baskerville"; src: url("../font/libre-baskerville-400-corsivo.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
 
@@ -318,7 +317,7 @@ html { scroll-padding-top: calc(var(--testata-bassa) + 16px); }
 .marchio img { width: auto; height: 68px; filter: var(--logo-filter); transform-origin: left center; transition: transform 0.28s var(--ease); }
 .testata.stretta .marchio img { transform: scale(0.76); }
 .menu ul { display: flex; align-items: center; gap: clamp(4px, 1.4vw, 20px); }
-.menu a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; color: var(--text); font-weight: 600; font-size: 0.9375rem; text-decoration: none; border-radius: var(--radius-sm); position: relative; }
+.menu a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; white-space: nowrap; color: var(--text); font-weight: 600; font-size: 0.9375rem; text-decoration: none; border-radius: var(--radius-sm); position: relative; }
 .menu a::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 9px; height: 2px; background: var(--primary); transform: scaleX(0); transform-origin: left; transition: transform 0.35s var(--ease); }
 .menu a:hover::after, .menu a[aria-current="page"]::after { transform: scaleX(1); }
 .menu a[aria-current="page"] { font-weight: 800; }
@@ -338,7 +337,7 @@ html { scroll-padding-top: calc(var(--testata-bassa) + 16px); }
   .menu-aperto .menu { visibility: visible; opacity: 1; transform: none; transition-delay: 0s; }
   .menu ul { display: grid; gap: 0; }
   .menu li { border-bottom: 1px solid var(--hairline); }
-  .menu a { width: 100%; min-height: 60px; padding: 0 var(--s1); font-family: var(--font-display); font-size: 1.9rem; font-weight: 400; letter-spacing: 0.02em; text-transform: uppercase; }
+  .menu a { width: 100%; min-height: 60px; padding: 0 var(--s1); font-family: var(--font-display); font-size: 1.9rem; font-weight: 400; letter-spacing: 0.02em; text-transform: uppercase; white-space: normal; }
   .menu a::after { display: none; }
   .menu a[aria-current="page"], .menu a[data-sezione] { color: var(--link); font-weight: 400; }
   html.menu-aperto { overflow: hidden; }
@@ -558,12 +557,12 @@ html.finestra-aperta { overflow: hidden; }
 .giochi { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s4); }
 .gioco-carta { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; color: inherit; text-decoration: none; background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius-lg); overflow: clip; transition: transform 0.45s var(--spring); }
 .gioco-carta:hover { transform: translateY(-6px) rotate(-0.6deg); }
-.gioco-carta .scena { aspect-ratio: 4 / 3; display: grid; place-items: center; padding: var(--s5); }
-.gioco-carta .scena svg { width: 100%; height: 100%; }
-.gioco-carta:nth-child(4n+1) .scena { background: var(--primary-tint); }
-.gioco-carta:nth-child(4n+2) .scena { background: var(--accent); }
-.gioco-carta:nth-child(4n+3) .scena { background: var(--info-bg); }
-.gioco-carta:nth-child(4n+4) .scena { background: var(--warning-bg); }
+.gioco-carta .disegno { aspect-ratio: 4 / 3; display: grid; place-items: center; padding: var(--s5); }
+.gioco-carta .disegno svg { width: 100%; height: 100%; }
+.gioco-carta:nth-child(4n+1) .disegno { background: var(--primary-tint); }
+.gioco-carta:nth-child(4n+2) .disegno { background: var(--accent); }
+.gioco-carta:nth-child(4n+3) .disegno { background: var(--info-bg); }
+.gioco-carta:nth-child(4n+4) .disegno { background: var(--warning-bg); }
 .gioco-carta .dentro { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: var(--s2); padding: var(--s5); }
 .gioco-carta h3 { font: 400 1.9rem/0.95 var(--font-display); text-transform: uppercase; letter-spacing: 0.02em; }
 .gioco-carta p { font-size: 0.9375rem; color: var(--text-2); }
@@ -733,7 +732,7 @@ html.finestra-aperta { overflow: hidden; }
   .tavola .dida { flex-direction: column; gap: 2px; padding: 8px; letter-spacing: 0.1em; }
   .tavola .dida span + span { text-align: left; }
   .gioco-carta { grid-template-columns: 120px 1fr; grid-template-rows: none; }
-  .gioco-carta .scena { aspect-ratio: auto; height: 100%; padding: var(--s3); }
+  .gioco-carta .disegno { aspect-ratio: auto; height: 100%; padding: var(--s3); }
 }
 @media (hover: none) {
   .btn:hover, .gioco-carta:hover { transform: none; }
@@ -745,13 +744,14 @@ html.finestra-aperta { overflow: hidden; }
 }
 
 /* ---------- striscia in cima: uno o due inviti veri, scritti nei dati del sito ---------- */
-.striscia { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 var(--s3); margin: 0; max-width: none; padding: 0 var(--gutter); background: var(--shell); color: var(--on-shell); font-size: var(--fs-small); font-weight: 600; text-align: center; }
-.striscia a { display: inline-flex; align-items: center; min-height: 44px; color: var(--on-shell); }
+.striscia { padding: 0 var(--gutter); background: var(--shell); color: var(--on-shell); font-size: var(--fs-small); font-weight: 600; text-align: center; }
+.striscia p { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 var(--s3); margin: 0; max-width: none; }
+.striscia a { display: inline-flex; align-items: center; min-height: 44px; padding-block: 8px; line-height: 1.35; color: var(--on-shell); }
 .striscia :focus-visible { outline-color: var(--on-shell); }
 @media (max-width: 720px) { .striscia span, .striscia a + span + a { display: none; } }
 
 /* ---------- apertura: prima le fotografie dei progetti, a tutta larghezza ---------- */
-.scena { position: relative; height: clamp(320px, 62vh, 700px); overflow: hidden; background: var(--night); }
+.scena { position: absolute; inset: 0 0 var(--scena-sotto) 0; overflow: hidden; background: var(--night); }
 .scena-foto { position: absolute; inset: 0; opacity: 0; }
 .scena-foto:first-child { opacity: 1; }
 .scena-foto picture, .scena-foto img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -767,14 +767,37 @@ html.finestra-aperta { overflow: hidden; }
 }
 @keyframes scena-prima { 0% { opacity: 1; transform: scale(1); } 25% { opacity: 1; } 29% { opacity: 0; transform: scale(1.07); } 96% { opacity: 0; transform: scale(1); } 100% { opacity: 1; transform: scale(1); } }
 @keyframes scena-cambio { 0% { opacity: 0; transform: scale(1); } 4% { opacity: 1; } 25% { opacity: 1; } 29% { opacity: 0; transform: scale(1.07); } 100% { opacity: 0; transform: scale(1.07); } }
-.scena-ferma { position: absolute; right: var(--gutter); bottom: var(--s4); z-index: 2; display: none; place-content: center; width: 44px; height: 44px; padding: 0; background: var(--night); color: var(--on-night); border: 1px solid var(--on-night); border-radius: 999px; cursor: pointer; }
+.scena-ferma { position: absolute; right: var(--gutter); top: var(--s4); z-index: 2; display: none; place-content: center; width: 44px; height: 44px; padding: 0; background: var(--night); color: var(--on-night); border: 1px solid var(--on-night); border-radius: 999px; cursor: pointer; }
 .scena-ferma svg { width: 20px; height: 20px; }
 .scena-ferma:focus-visible { outline-color: var(--on-night); }
 .scena-ferma .via, .scena.ferma .scena-ferma .pausa { display: none; }
 .scena.ferma .scena-ferma .via { display: block; }
-@media (max-width: 720px) { .scena { height: clamp(260px, 46vh, 420px); } }
 @media print { .scena, .striscia { display: none; } }
 
+/* ---------- apertura (skill di grafica 3.3.0): le fotografie dei lavori riempiono il primo schermo; titolo, una frase,
+   un fatto vero e il pulsante principale si vedono senza scorrere. L'apertura è alta quanto resta del primo schermo
+   (--sopra lo misura tema.js); la carta sta in basso, a cavallo del bordo della fotografia. ---------- */
+.apertura { --scena-sotto: clamp(40px, 7vh, 72px); display: grid; align-items: end; min-height: clamp(440px, calc(100vh - var(--sopra, calc(var(--testata-alta) + 44px))), 860px); padding-block: var(--s24) 0; overflow: visible; }
+@supports (height: 100svh) { .apertura { min-height: clamp(440px, calc(100svh - var(--sopra, calc(var(--testata-alta) + 44px))), 860px); } }
+.apertura::before { content: none; }
+.apertura > .wrap { position: relative; z-index: 2; }
+.apertura-carta { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s4); justify-items: start; max-width: 620px; padding: clamp(20px, 2.6vw, 40px); background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius-lg); box-shadow: var(--shadow); }
+.apertura-carta h1 { gap: var(--s4); }
+.apertura-carta .titolone { font-size: clamp(3rem, 1.7rem + 4.6vw, 5.4rem); }
+.apertura-carta .attacco { font-size: var(--fs-base); }
+.regia-testo { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s5); }
+/* sul telefono la fotografia sta in alto, sopra il testo e non dietro: prende lo spazio che resta nel primo schermo */
+@media (max-width: 720px) {
+  .apertura { grid-template-rows: minmax(190px, 1fr) auto; align-items: stretch; padding-block: 0; }
+  .scena { position: relative; inset: auto; }
+  .apertura > .wrap { margin-top: -44px; padding-bottom: var(--s4); }
+  .apertura-carta { gap: var(--s3); }
+}
+/* schermi molto stretti: il marchio si fa piccolo, i comandi restano larghi 44 px */
+.menu-apri, .tema { flex: none; }
+@media (max-width: 360px) { .marchio img { height: 50px; } }
+
 /* ---------- solo per la bozza in anteprima: non fa parte del sito vero ---------- */
-.anteprima-fascia { margin: 0; max-width: none; padding: 10px max(var(--gutter), calc((100% - var(--maxw)) / 2)); background: var(--warning-bg); color: var(--warning-fg); font-size: var(--fs-small); line-height: 1.4; }
+.anteprima-fascia p { margin: 0; max-width: none; }
+.anteprima-fascia { padding: 10px max(var(--gutter), calc((100% - var(--maxw)) / 2)); background: var(--warning-bg); color: var(--warning-fg); font-size: var(--fs-small); line-height: 1.4; }
 .anteprima-fascia a { color: inherit; }

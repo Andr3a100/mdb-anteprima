@@ -14,3 +14,21 @@
   }
   radice.setAttribute("data-theme", scelto === "scuro" ? "dark" : "light");
 })();
+
+/* Quanto spazio c'è sopra il contenuto (fascia della bozza, striscia, testata): l'apertura lo usa per stare tutta nel
+   primo schermo, con il titolo e il pulsante visibili senza scorrere. Si misura appena compare il contenuto, prima che
+   la pagina si disegni, così niente si sposta dopo. */
+(function () {
+  var radice = document.documentElement;
+  function misura() {
+    var contenuto = document.getElementById("contenuto");
+    if (contenuto) { radice.style.setProperty("--sopra", Math.round(contenuto.getBoundingClientRect().top + window.pageYOffset) + "px"); }
+    return Boolean(contenuto);
+  }
+  if (!misura() && "MutationObserver" in window) {
+    var guardia = new MutationObserver(function () { if (misura()) { guardia.disconnect(); } });
+    guardia.observe(radice, { childList: true, subtree: true });
+  }
+  window.addEventListener("load", misura);
+  window.addEventListener("resize", misura);
+})();
